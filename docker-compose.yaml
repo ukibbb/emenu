@@ -1,0 +1,74 @@
+version: "3"
+
+services:
+  redis:
+    container_name: redis
+    image: redis:7.0.8-alpine
+    ports:
+      - "6379:6379"
+
+  postgres:
+    container_name: postgres
+    restart: always
+    image: postgres:15.2-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: $DB_NAME
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASS
+      POSTGRES_HOST: $DB_HOST
+      POSTGRES_PORT: $DB_PORT
+
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: config/backend.dockerfile
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - ./backend:/backend
+    environment:
+      - UWSGI_PY_AUTORELOAD=1 # development only
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+
+  celery:
+    container_name: celery
+    build:
+      context: .
+      dockerfile: config/backend.dockerfile
+    command: "celery -A core worker -l INFO"
+    volumes:
+      - ./backend:/backend
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+
+  flower:
+    container_name: flower
+    image: mher/flower
+    env_file:
+      - .env
+    ports:
+      - 8888:8888
+
+  celery-beat:
+    container_name: celery-beat
+    build:
+      context: .
+      dockerfile: config/backend.dockerfile
+    command: "celery -A core beat -l INFO"
+    volumes:
+      - ./backend:/backend
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
