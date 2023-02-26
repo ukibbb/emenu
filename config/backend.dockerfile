@@ -4,8 +4,6 @@ RUN pip install --upgrade pip
 
 WORKDIR /backend
 
-
-
 COPY Pipfile.lock Pipfile /backend/
 
 RUN pip install --no-cache-dir pipenv && \
@@ -13,6 +11,7 @@ RUN pip install --no-cache-dir pipenv && \
     pipenv install --system --deploy --ignore-pipfile --dev
 
 ENV PYTHONUNBUFFERED 1
+
 ENV UWSGI_INI /config/uwsgi.ini
 
 COPY ./config/scripts/wait-for-it.sh /scripts/wait-for-it.sh
