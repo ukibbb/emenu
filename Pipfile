@@ -10,7 +10,6 @@ djangorestframework = "*"
 celery = "*"
 psycopg2-binary = "*"
 django-redis = "*"
-pendulum = "*"
 djangorestframework-simplejwt = "*"
 
 [dev-packages]
