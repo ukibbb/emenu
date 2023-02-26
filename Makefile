@@ -5,3 +5,6 @@ lint:
 		flake8 .;\
 		pydocstyle .;\
 	"
+
+test:
+	docker-compose run --rm backend pytest --cov=.
