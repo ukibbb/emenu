@@ -8,3 +8,6 @@ lint:
 
 test:
 	docker-compose run --rm backend pytest --cov=.
+
+superuser:
+	docker-compose run --rm backend python manage.py createsuperuser
