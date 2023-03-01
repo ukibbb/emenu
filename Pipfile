@@ -11,6 +11,8 @@ celery = "*"
 psycopg2-binary = "*"
 django-redis = "*"
 djangorestframework-simplejwt = "*"
+drf-spectacular = "*"
+drf-spectacular-sidecar = "*"
 
 [dev-packages]
 pytest = "*"
