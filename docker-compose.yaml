@@ -71,6 +71,17 @@ services:
     env_file:
       - .env
 
+  api_docs:
+    container_name: api_docs
+    image: swaggerapi/swagger-ui
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    volumes:
+      - ./backend/schema.yml:/schema.yml
+    
+
 volumes:
   db:
     driver: local
