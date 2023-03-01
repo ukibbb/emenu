@@ -11,3 +11,15 @@ test:
 
 superuser:
 	docker-compose run --rm backend python manage.py createsuperuser
+
+migrate:
+	docker-compose run --rm backend python manage.py migrate
+
+sh:
+	docker-compose run --rm backend sh
+
+migrations:
+	cd backend && python manage.py makemigrations
+
+attach:
+	docker attach backend
