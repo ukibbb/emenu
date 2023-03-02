@@ -32,8 +32,6 @@ services:
       - UWSGI_PY_AUTORELOAD=1 # development only
     env_file:
       - .env
-    ports:
-      - 8000:8000
 
   celery:
     container_name: celery
@@ -52,10 +50,9 @@ services:
   flower:
     container_name: flower
     image: mher/flower
+    command: celery flower --url-prefix=flower
     env_file:
       - .env
-    ports:
-      - 8888:8888
 
   celery-beat:
     container_name: celery-beat
@@ -74,13 +71,23 @@ services:
   api_docs:
     container_name: api_docs
     image: swaggerapi/swagger-ui
-    ports:
-      - 8080:8080
     env_file:
       - .env
     volumes:
       - ./backend/schema.yml:/schema.yml
-    
+
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: config/nginx.dockerfile
+    volumes:
+      - ./config/nginx/nginx.conf:/var/nginx.conf
+    depends_on:
+      - backend
+    ports:
+      - 80:80
+      - 443:443
 
 volumes:
   db:
