@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/scripts/wait-for-it.sh -t 15 $DB_HOST:$DB_PORT
+/scripts/wait-for-it.sh -t 15 $POSTGRES_HOST:$POSTGRES_PORT
 
 python /backend/manage.py collectstatic --noinput
 python /backend/manage.py migrate --noinput
