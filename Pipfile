@@ -13,6 +13,8 @@ django-redis = "*"
 djangorestframework-simplejwt = "*"
 drf-spectacular = "*"
 drf-spectacular-sidecar = "*"
+django-cors-headers = "*"
+whitenoise = "*"
 
 [dev-packages]
 pytest = "*"
