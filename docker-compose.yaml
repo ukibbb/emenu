@@ -54,14 +54,15 @@ services:
     env_file:
       - .env
 
-  celery-beat:
-    container_name: celery-beat
+  celery_beat:
+    container_name: celery_beat
     build:
       context: .
       dockerfile: config/backend.dockerfile
     command: "celery -A core beat -l INFO"
     volumes:
       - ./backend:/backend
+      - ./config/backend:/config
     depends_on:
       - db
       - redis
