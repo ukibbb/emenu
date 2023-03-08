@@ -23,3 +23,6 @@ migrations:
 
 attach:
 	docker attach backend
+
+shell:
+	docker-compose run backend ./manage.py shell_plus --ipython
