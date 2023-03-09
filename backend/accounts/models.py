@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 
 
 class UserManager(BaseUserManager):
+    """Custom user manager."""
+
     def _create_user(
         self,
         email,
@@ -53,6 +55,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """Custom user model."""
+
     app_label = "accounts"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

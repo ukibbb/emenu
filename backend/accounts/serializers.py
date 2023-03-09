@@ -9,12 +9,16 @@ logger = logging.getLogger(__name__)
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """User model serializer."""
+
     class Meta:
         model = User
         fields = ("email",)
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
+    """User registration serializer."""
+
     email = serializers.EmailField()
 
     class Meta:

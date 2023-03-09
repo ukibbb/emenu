@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 
 
 class UserRegisterView(CreateModelMixin, GenericAPIView):
+    """View for registering a user."""
+
     serializer_class = UserRegistrationSerializer
     authentication_classes = ()
 
@@ -26,6 +28,8 @@ class UserRegisterView(CreateModelMixin, GenericAPIView):
 
 
 class UserOwnAccountView(GenericAPIView):
+    """Get current logged in user."""
+
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)
 
