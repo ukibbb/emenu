@@ -12,7 +12,7 @@ def users_registration_key():
     return ["id", "email", "password"]
 
 
-@pytest.mark.django_db(transaction=False)
+@pytest.mark.django_db
 def test_user_should_be_serialized(user, users_key, user_data):
     serializer = UserSerializer(instance=user)
     data = serializer.data
@@ -21,7 +21,7 @@ def test_user_should_be_serialized(user, users_key, user_data):
         assert data[key] == user_data[key]
 
 
-@pytest.mark.django_db(transaction=False)
+@pytest.mark.django_db
 def test_user_during_registration_should_be_serialized(
     user, users_registration_key, user_data
 ):

@@ -1,6 +1,8 @@
 import django
 import pytest
 from accounts.models import User
+from menu_items.models import MenuItem
+from menus.models import Menu
 from rest_framework.test import APIClient, APIRequestFactory
 from rest_framework_simplejwt.tokens import AccessToken
 
@@ -9,7 +11,7 @@ django.setup()
 
 @pytest.fixture
 def authorization_header(user: User) -> dict:
-    """Generate a toke and return dictionary with authorization header
+    """Generate a token and return dictionary with authorization header
     that can be used in client requests."""
     token = AccessToken.for_user(user)
     return {"HTTP_AUTHORIZATION": f"Bearer {str(token)}"}
@@ -22,12 +24,20 @@ def client() -> APIClient:
 
 
 @pytest.fixture
+def client_with_credentials(client: APIClient, authorization_header: dict) -> APIClient:
+    """Created client with login credentials passed."""
+    client.credentials(**authorization_header)
+    return client
+
+
+@pytest.fixture
 def request_factory() -> APIRequestFactory:
+    """Helper fixture for requests."""
     return APIRequestFactory()
 
 
 @pytest.fixture(scope="module")  # run once per test module.
-def user_data():
+def user_data() -> dict:
     return {
         "id": "1f124eb0-cf7b-405b-8f0f-1f00ee2aed35",
         "email": "John.Doe@example.com",
@@ -35,17 +45,53 @@ def user_data():
     }
 
 
-@pytest.fixture()
-def superuser(user_data):
+@pytest.fixture
+def superuser(user_data) -> User:
     superuser, _ = User.objects.get_or_create(
         email=user_data["email"], is_staff=True, is_active=True, is_superuser=True
     )
     return superuser
 
 
-@pytest.fixture()
-def user(user_data):
-    user, _ = User.objects.get_or_create(
+@pytest.fixture
+def menus_data() -> list[dict]:
+    return [
+        {"name": "Vegetarian", "description": "Menu with food without meat."},
+        {"name": "Meatfull", "description": "A lot of meat in this menu"},
+        {"name": "Polish", "description": "Polish Menu"},
+    ]
+
+
+@pytest.fixture
+def menu_items_data() -> list[dict]:
+    return [
+        {
+            "name": "Tomato Soup",
+            "description": "Tomato soup.",
+            "price": 20.0,
+            "is_vegetarian": True,
+            "preparation_time": "00:30:00",
+        },
+        {
+            "name": "Sznycel",
+            "description": "Piece of meat.",
+            "price": 23.0,
+            "is_vegetarian": False,
+            "preparation_time": "00:50:00",
+        },
+        {
+            "name": "Salomon",
+            "description": "Piece of fish",
+            "price": 19.0,
+            "is_vegetarian": True,
+            "preparation_time": "01:50:00",
+        },
+    ]
+
+
+@pytest.fixture
+def user(user_data) -> User:
+    user = User.objects.create(
         password=user_data["password"],
         email=user_data["email"],
         is_staff=False,
@@ -53,3 +99,27 @@ def user(user_data):
         is_superuser=False,
     )
     return user
+
+
+@pytest.fixture
+def menus(menus_data, menu_items) -> list[Menu]:
+    return [
+        Menu.objects.create(
+            name=menu["name"], description=menu["description"], items=menu_items
+        )
+        for menu in menus_data
+    ]
+
+
+@pytest.fixture
+def menu_items(menu_items_data) -> list[MenuItem]:
+    return [
+        MenuItem.objects.create(
+            name=menu_item["name"],
+            description=menu_item["description"],
+            price=menu_item["price"],
+            preparation_time=menu_item["preparation_time"],
+            is_vegetarian=menu_item["is_vegetarian"],
+        )
+        for menu_item in menu_items_data
+    ]

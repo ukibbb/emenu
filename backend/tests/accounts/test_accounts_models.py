@@ -2,7 +2,7 @@ import pytest
 from accounts.models import User
 
 
-@pytest.mark.django_db()
+@pytest.mark.django_db
 class TestUsersModelsCase:
     """Standard User Test Case."""
 

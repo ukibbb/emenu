@@ -10,7 +10,7 @@ REGISTER_API_URL = "/api/v1/accounts/register/"
 MY_ACCOUNT_API_URL = "/api/v1/accounts/me/"
 
 
-@pytest.mark.django_db(transaction=False)
+@pytest.mark.django_db
 class TestUsersApiView:
     def test_user_register_view(
         self, request_factory: APIRequestFactory, user_data: dict
