@@ -18,8 +18,7 @@ https://docs.docker.com/engine/install/
 4. Then in project root directory run:
 
 ```
-docker-compose build
-docker-compose up
+docker-compose up --build
 ```
 
 Project is up and runnning on `http://localhost/api/v1`
