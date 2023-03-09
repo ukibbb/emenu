@@ -27,13 +27,13 @@ Project is up and runnning on `http://localhost/api/v1`
 ### Creating superuser
 In project root.
 ``` 
-`make superuser`
+make superuser
 ```
 
 ### Running test suite.
 In project root.
 ```
-`make test`
+make test
 ```
 
 ### Documentation
