@@ -19,7 +19,6 @@ django-extensions = "*"
 django-filter = "*"
 django-crispy-forms = "*"
 crispy-bootstrap4 = "*"
-sendgrid = "*"
 
 [dev-packages]
 pytest = "*"
