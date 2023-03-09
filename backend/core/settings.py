@@ -35,6 +35,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "whitenoise.runserver_nostatic",
+    "django_filters",
+    "crispy_forms",
+    "crispy_bootstrap4",
+    "django_extensions",
     "rest_framework",
     "corsheaders",
     "drf_spectacular",
@@ -61,7 +65,9 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            os.path.join(BASE_DIR, "templates"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -69,10 +75,11 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-            ],
+            ]
         },
-    },
+    }
 ]
+
 
 WSGI_APPLICATION = "core.wsgi.application"
 
@@ -155,7 +162,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 
-
 STATIC_URL = "/back_static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 STATICFILES_DIRS = []
@@ -178,10 +184,17 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 EMAIL_FROM = os.environ.get("EMAIL_FROM")
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS")
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # Celery configuration
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
@@ -190,9 +203,11 @@ CELERY_ACCEPT_CONTENT = ("application/json",)
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
+
 SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_DIST": "SIDECAR",  # shorthand to use the sidecar instead
     "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
     "REDOC_DIST": "SIDECAR",
     # OTHER SETTINGS
 }
+CRISPY_TEMPLATE_PACK = "bootstrap4"
