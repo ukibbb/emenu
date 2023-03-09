@@ -1,0 +1,18 @@
+
+<p>
+    {% if updated %}
+        Hey those are recently updated items in our menus.
+        {% for dish in updated %}
+            {{ dish.name }}
+            {{ dish.description }}
+        {% endfor %}
+    {% endif %}
+    {% if created %}
+        Hey those are new items in our menus..
+        {% for dish in created %}
+            {{ dish.name }}
+            {{ dish.description }}
+        {% endfor %}
+    {% endif %}        
+</p>
+
