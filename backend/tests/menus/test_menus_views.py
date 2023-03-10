@@ -1,7 +1,5 @@
 import pytest
 from accounts.models import User
-from menu_items.models import MenuItem
-from menus.models import Menu
 from menus.views import MenuViewSet
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
@@ -34,4 +32,4 @@ class TestMenusView:
         self, client_with_credentials: APIClient
     ):
         response = client_with_credentials.get(MENUS_API_URL)
-        assert len(response.data) == 1
+        assert len(response.data) == 2
