@@ -3,6 +3,8 @@ from django.db.models import Count
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django_filters import rest_framework as rest_filters
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schema
 from rest_framework import filters, viewsets
 from rest_framework.permissions import IsAuthenticated
 
@@ -31,6 +33,49 @@ class MenuViewSet(viewsets.ModelViewSet):
     search_fields = ["name"]
     ordering_fields = ["name", "items_count"]
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="created_at_before",
+                location=OpenApiParameter.QUERY,
+                type=OpenApiTypes.DATE,
+            ),
+            OpenApiParameter(
+                name="created_at_after",
+                location=OpenApiParameter.QUERY,
+                type=OpenApiTypes.DATE,
+            ),
+            OpenApiParameter(
+                name="updated_at_before",
+                location=OpenApiParameter.QUERY,
+                type=OpenApiTypes.DATE,
+            ),
+            OpenApiParameter(
+                name="updated_at_after",
+                location=OpenApiParameter.QUERY,
+                type=OpenApiTypes.DATE,
+            ),
+            OpenApiParameter(
+                name="ordering",
+                location=OpenApiParameter.QUERY,
+                type=OpenApiTypes.STR,
+                examples=[
+                    OpenApiExample(
+                        "Ordering by how many items is in menu -> descending",
+                        value="-items_count",
+                    ),
+                    OpenApiExample(
+                        "Ordering by how many items is in menu -> ascending",
+                        value="items_count",
+                    ),
+                    OpenApiExample("Ordering by menu name -> ascending", value="name"),
+                    OpenApiExample(
+                        "Ordering by menu name -> descending", value="-name"
+                    ),
+                ],
+            ),
+        ]
+    )
     @method_decorator(cache_page(60 * 60 * 2))
     def list(self, *args, **kwargs):
         return super().list(*args, **kwargs)
