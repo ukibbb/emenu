@@ -54,39 +54,26 @@ def superuser(user_data) -> User:
 
 
 @pytest.fixture
-def menus_data() -> list[dict]:
-    return [
-        {"name": "Vegetarian", "description": "Menu with food without meat."},
-        {"name": "Meatfull", "description": "A lot of meat in this menu"},
-        {"name": "Polish", "description": "Polish Menu"},
-    ]
+def menus_data() -> dict:
+    return {"name": "Greek", "description": "Menu with food from greece."}
 
 
 @pytest.fixture
-def menu_items_data() -> list[dict]:
-    return [
-        {
-            "name": "Tomato Soup",
-            "description": "Tomato soup.",
-            "price": 20.0,
-            "is_vegetarian": True,
-            "preparation_time": "00:30:00",
-        },
-        {
-            "name": "Sznycel",
-            "description": "Piece of meat.",
-            "price": 23.0,
-            "is_vegetarian": False,
-            "preparation_time": "00:50:00",
-        },
-        {
-            "name": "Salomon",
-            "description": "Piece of fish",
-            "price": 19.0,
-            "is_vegetarian": True,
-            "preparation_time": "01:50:00",
-        },
-    ]
+def menu(menus_data):
+    return Menu.objects.create(
+        name=menus_data["name"], description=menus_data["description"]
+    )
+
+
+@pytest.fixture
+def menu_items_data() -> dict:
+    return {
+        "name": "Gyros",
+        "description": "Tasty meat",
+        "price": 20.0,
+        "is_vegetarian": True,
+        "preparation_time": "00:30:00",
+    }
 
 
 @pytest.fixture

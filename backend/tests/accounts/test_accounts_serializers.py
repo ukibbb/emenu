@@ -1,5 +1,6 @@
 import pytest
 from accounts.serializers import UserRegistrationSerializer, UserSerializer
+from rest_framework.request import Request
 
 
 @pytest.fixture()
