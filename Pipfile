@@ -17,8 +17,6 @@ django-cors-headers = "*"
 whitenoise = "*"
 django-extensions = "*"
 django-filter = "*"
-django-crispy-forms = "*"
-crispy-bootstrap4 = "*"
 
 [dev-packages]
 pytest = "*"

@@ -36,8 +36,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "whitenoise.runserver_nostatic",
     "django_filters",
-    "crispy_forms",
-    "crispy_bootstrap4",
     "django_extensions",
     "rest_framework",
     "corsheaders",
@@ -210,4 +208,3 @@ SPECTACULAR_SETTINGS = {
     "REDOC_DIST": "SIDECAR",
     # OTHER SETTINGS
 }
-CRISPY_TEMPLATE_PACK = "bootstrap4"

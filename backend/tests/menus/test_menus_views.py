@@ -1,6 +1,5 @@
 import pytest
 from accounts.models import User
-from menu_items.models import MenuItem
 from menus.models import Menu
 from menus.views import MenuViewSet
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
@@ -11,7 +10,7 @@ MENUS_API_URL = "/api/v1/menus/"
 
 @pytest.mark.django_db()
 class TestMenusView:
-    def test_should_view_be_protected_without_token(self, client: APIClient) -> None:
+    def test_should_view_be_protected_without_token(self, client: APIClient):
         response = client.get(MENUS_API_URL)
         assert response.status_code == HTTP_401_UNAUTHORIZED
 
@@ -34,4 +33,33 @@ class TestMenusView:
         self, client_with_credentials: APIClient
     ):
         response = client_with_credentials.get(MENUS_API_URL)
-        assert len(response.data) == 1
+        assert len(response.data) == 2
+
+    def test_shoud_create_menu(
+        self, client_with_credentials: APIClient, menus_data: dict
+    ):
+        response = client_with_credentials.post(
+            MENUS_API_URL, data=menus_data, format="json"
+        )
+        assert response.status_code == 201
+        assert response.data["name"] == menus_data["name"]
+
+    def test_should_not_create_menu_name_not_unique(
+        self, client_with_credentials: APIClient
+    ):
+        response = client_with_credentials.post(
+            MENUS_API_URL,
+            data={"name": "Vegetarian", "description": "Menu with food without meat"},
+            format="json",
+        )
+        assert response.exception == True
+        assert response.status_text == "Bad Request"
+        assert response.status_code == 400
+        assert response.json()["name"] == ["menu with this name already exists."]
+
+    def test_should_retrive_vegetarian_menu(self, client_with_credentials: APIClient):
+        menu = Menu.objects.get(name="Vegetarian")
+        url = f"{MENUS_API_URL}{str(menu.id)}"
+        response = client_with_credentials.get(url, follow=True)
+        assert response.status_code == 200
+        assert response.json()["name"] == menu.name
